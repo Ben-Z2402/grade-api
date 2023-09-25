@@ -24,6 +24,7 @@ public class GUI {
         JoinTeamUseCase joinTeamUseCase = config.joinTeamUseCase();
         LeaveTeamUseCase leaveTeamUseCase = config.leaveTeamUseCase();
         GetAverageGradeUseCase getAverageGradeUseCase = config.getAverageGradeUseCase();
+        GetTeamMembersUseCase getTeamMembersUseCase = config.GetTeamMembersUseCase();
 
         // this is the code that runs to set up our GUI
         SwingUtilities.invokeLater(() -> {
@@ -39,7 +40,8 @@ public class GUI {
             JPanel logGradeCard = createLogGradeCard(frame, logGradeUseCase);
             JPanel formTeamCard = createFormTeamCard(frame, formTeamUseCase);
             JPanel joinTeamCard = createJoinTeamCard(frame, joinTeamUseCase);
-            JPanel manageTeamCard = createManageTeamCard(frame, leaveTeamUseCase, getAverageGradeUseCase);
+            JPanel manageTeamCard = createManageTeamCard(frame, leaveTeamUseCase, getAverageGradeUseCase,
+                                                        getTeamMembersUseCase);
 
             cardPanel.add(defaultCard, "DefaultCard");
             cardPanel.add(getGradeCard, "GetGradeCard");
@@ -216,13 +218,15 @@ public class GUI {
 
 
     private static JPanel createManageTeamCard(JFrame jFrame, LeaveTeamUseCase leaveTeamUseCase,
-                                               GetAverageGradeUseCase getAverageGradeUseCase) {
+                                               GetAverageGradeUseCase getAverageGradeUseCase,
+                                               GetTeamMembersUseCase GetTeamMembersUseCase) {
         JPanel theCard = new JPanel();
         theCard.setLayout(new GridLayout(4, 2));
         JTextField courseField = new JTextField(20);
         // make a separate line.
         JButton getAverageButton = new JButton("Get Average Grade");
         JButton leaveTeamButton = new JButton("Leave Team");
+        JButton getTeamMembersButton = new JButton("Get Team Members");
         JLabel resultLabel = new JLabel();
 
         getAverageButton.addActionListener(e -> {
@@ -246,10 +250,23 @@ public class GUI {
                 JOptionPane.showMessageDialog(jFrame, ex.getMessage());
             }
         });
+
+        getTeamMembersButton.addActionListener(e -> {
+            String team = courseField.getText();
+
+            try {
+                String[] members = GetTeamMembersUseCase.getTeamMembers(team);
+                JOptionPane.showMessageDialog(jFrame, "Team members: " + members.toString());
+                courseField.setText("");
+            } catch (RuntimeException ex) {
+                JOptionPane.showMessageDialog(jFrame, ex.getMessage());
+            }
+        });
         theCard.add(new JLabel("The Course you want to calculate the team average for:"));
         theCard.add(courseField);
         theCard.add(getAverageButton);
         theCard.add(leaveTeamButton);
+        theCard.add(getTeamMembersButton);
         theCard.add(resultLabel);
 
 
