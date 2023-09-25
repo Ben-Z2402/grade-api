@@ -1,5 +1,4 @@
 package use_case;
-import entity.Team;
 import api.GradeDB;
 
 public final class GetTeamMembersUseCase {
@@ -7,7 +6,7 @@ public final class GetTeamMembersUseCase {
 
     public GetTeamMembersUseCase(GradeDB gradeDB) { this.gradeDB = gradeDB; }
 
-    public String[] getTeamMembers(String name) {
+    public String[] getTeamMembers() {
         return gradeDB.getMyTeam().getMembers();
     }
 }

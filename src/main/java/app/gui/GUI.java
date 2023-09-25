@@ -252,10 +252,8 @@ public class GUI {
         });
 
         getTeamMembersButton.addActionListener(e -> {
-            String team = courseField.getText();
-
             try {
-                String[] members = GetTeamMembersUseCase.getTeamMembers(team);
+                String[] members = GetTeamMembersUseCase.getTeamMembers();
                 JOptionPane.showMessageDialog(jFrame, "Team members: " + members.toString());
                 courseField.setText("");
             } catch (RuntimeException ex) {
